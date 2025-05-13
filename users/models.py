@@ -19,15 +19,12 @@ class User(AbstractUser):
     phone = models.CharField(max_length=30, verbose_name="Телефон", help_text="Введите ваш номер телефона")
     country = models.CharField(verbose_name="Страна", help_text="Введите вашу страну")
 
-    token = models.CharField(max_length=100, verbose_name="Token", blank=True, null=True)
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
-        permissions = [("can_blocking_users", "Can blocking users")]
 
     def __str__(self):
         return self.email

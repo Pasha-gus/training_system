@@ -3,8 +3,15 @@ from rest_framework.routers import SimpleRouter
 
 from courses.apps import CoursesConfig
 
-from .views import (CourseViewSet, LessonCreateApiView, LessonDestroyAPIView, LessonListApiView, LessonRetrieveAPIView,
-                    LessonUpdateAPIView, SubscriptionAPIView)
+from .views import (
+    CourseViewSet,
+    LessonCreateApiView,
+    LessonDestroyAPIView,
+    LessonListApiView,
+    LessonRetrieveAPIView,
+    LessonUpdateAPIView,
+    SubscriptionAPIView,
+)
 
 app_name = CoursesConfig.name
 

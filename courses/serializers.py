@@ -16,7 +16,7 @@ class CourseSerializer(ModelSerializer):
         return [lessons.name for lessons in Lesson.objects.filter(course=course)]
 
     def get_in_subscription(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         if request and request.user.is_authenticated:
             user = request.user
             return Subscription.objects.filter(course=obj, user=user).exists()
@@ -37,4 +37,4 @@ class LessonSerializer(ModelSerializer):
 class SubscriptionSerializer(ModelSerializer):
     class Meta:
         model = Subscription
-        fields = '__all__'
+        fields = "__all__"

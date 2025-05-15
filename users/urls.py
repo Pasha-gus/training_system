@@ -3,8 +3,14 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from users.apps import UsersConfig
-from users.views import (PaymentCreateAPIView, PaymentDestroyAPIView, PaymentListAPIView, PaymentRetrieveAPIView,
-                         PaymentUpdateAPIView, UserCreateAPIView)
+from users.views import (
+    PaymentCreateAPIView,
+    PaymentDestroyAPIView,
+    PaymentListAPIView,
+    PaymentRetrieveAPIView,
+    PaymentUpdateAPIView,
+    UserCreateAPIView,
+)
 
 app_name = UsersConfig.name
 

@@ -54,12 +54,12 @@ class Lesson(models.Model):
 
 
 class Subscription(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name='Пользователь')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс")
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, verbose_name="Пользователь")
 
     def __str__(self):
-        return f'{self.course} - {self.user}'
+        return f"{self.course} - {self.user}"
 
     class Meta:
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"

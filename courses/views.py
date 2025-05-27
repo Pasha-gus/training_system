@@ -9,6 +9,7 @@ from courses.models import Course, Lesson, Subscription
 from courses.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
 from users.permissions import IsModerator, IsOwner
 from courses.paginators import PageNumberPagination
+from courses.tasks import send_mail_update_course_info
 
 
 class CourseViewSet(ModelViewSet):
@@ -29,6 +30,12 @@ class CourseViewSet(ModelViewSet):
         elif self.action == "destroy":
             self.permission_classes = (IsOwner | ~IsModerator,)
         return super().get_permissions()
+
+    def perform_update(self, serializer):
+        updated_course = serializer.save()
+        send_mail_update_course_info(updated_course)
+        updated_course.save()
+
 
 
 class LessonCreateApiView(CreateAPIView):

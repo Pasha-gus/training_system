@@ -18,6 +18,7 @@ class User(AbstractUser):
     )
     phone = models.CharField(max_length=30, verbose_name="Телефон", help_text="Введите ваш номер телефона")
     country = models.CharField(verbose_name="Страна", help_text="Введите вашу страну")
+    last_login = models.DateField(verbose_name="Дата последнего входа", blank=True, null=True, auto_now=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

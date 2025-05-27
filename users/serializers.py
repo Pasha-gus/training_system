@@ -15,4 +15,7 @@ class PaymentSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ("email", "phone", "country", "avatar")
+        fields = ("email", "password", "phone", "country", "avatar")
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }

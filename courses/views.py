@@ -37,7 +37,6 @@ class CourseViewSet(ModelViewSet):
         updated_course.save()
 
 
-
 class LessonCreateApiView(CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer

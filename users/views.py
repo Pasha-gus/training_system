@@ -21,7 +21,7 @@ class PaymentCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         payment = serializer.save(user=self.request.user)
-        course_id = self.kwargs.get('course_id')
+        course_id = self.kwargs.get("course_id")
         course = Course.objects.all().get(id=course_id)
         course_name = course.name
         course_price = course.price
@@ -50,7 +50,7 @@ class UserCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)
-        user.set_password(serializer.validated_data['password'])
+        user.set_password(serializer.validated_data["password"])
         user.save()
 
 
@@ -60,7 +60,7 @@ class LoginAPIView(TokenObtainPairView):
 
         try:
             serializer.is_valid(raise_exception=True)
-            user = User.objects.get(email=request.data['email'])
+            user = User.objects.get(email=request.data["email"])
             user.last_login = date.today()
             user.save()
         except TokenError as e:

@@ -12,11 +12,7 @@ def create_stripe_product(course_name):
 def create_stripe_price(course_price, stripe_product_id):
     """Создает цену в stripe."""
     course_price_float = float(course_price)
-    return stripe.Price.create(
-        currency="rub",
-        unit_amount=int(course_price_float * 100),
-        product=stripe_product_id
-    )
+    return stripe.Price.create(currency="rub", unit_amount=int(course_price_float * 100), product=stripe_product_id)
 
 
 def create_stripe_session(stripe_price):

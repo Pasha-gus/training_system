@@ -18,11 +18,7 @@ class User(AbstractUser):
     )
     phone = models.CharField(max_length=30, verbose_name="Телефон", help_text="Введите ваш номер телефона")
     country = models.CharField(
-        max_length=100,
-        verbose_name="Страна",
-        help_text="Введите вашу страну",
-        blank=True,
-        null=True
+        max_length=100, verbose_name="Страна", help_text="Введите вашу страну", blank=True, null=True
     )
     last_login = models.DateField(verbose_name="Дата последнего входа", blank=True, null=True, auto_now=False)
 
@@ -64,7 +60,9 @@ class Payment(models.Model):
         blank=True,
         null=True,
     )
-    payment_amount = models.DecimalField(decimal_places=2, max_digits=7, verbose_name="Сумма оплаты", blank=True, null=True)
+    payment_amount = models.DecimalField(
+        decimal_places=2, max_digits=7, verbose_name="Сумма оплаты", blank=True, null=True
+    )
     payment_method = models.CharField(
         choices=PAYMENT_METHOD,
         max_length=255,

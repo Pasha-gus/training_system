@@ -17,7 +17,7 @@ class User(AbstractUser):
         help_text="Загрузите ваш аватар",
     )
     phone = models.CharField(max_length=30, verbose_name="Телефон", help_text="Введите ваш номер телефона")
-    country = models.CharField(verbose_name="Страна", help_text="Введите вашу страну")
+    country = models.CharField(max_length=100, verbose_name="Страна", help_text="Введите вашу страну", blank=True, null=True)
     last_login = models.DateField(verbose_name="Дата последнего входа", blank=True, null=True, auto_now=False)
 
     USERNAME_FIELD = "email"

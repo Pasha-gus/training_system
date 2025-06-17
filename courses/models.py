@@ -44,7 +44,7 @@ class Lesson(models.Model):
     owner = models.ForeignKey(
         "users.User", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Автор урока"
     )
-    url = models.CharField(null=True, blank=True, verbose_name="Ссылка на урок")
+    url = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ссылка на урок")
 
     class Meta:
         verbose_name = "Урок"

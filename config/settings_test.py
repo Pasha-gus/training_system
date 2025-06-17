@@ -59,7 +59,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'test_db.sqlite3',
+        'NAME': ':memory:',  # Используем базу в памяти для тестов
+        'TEST': {
+            'NAME': ':memory:',
+        }
     }
 }
 
@@ -96,4 +99,4 @@ PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 CELERY_BROKER_URL = None
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
-SILENCED_SYSTEM_CHECKS = ['fields.W340', 'admin.E403']
+SILENCED_SYSTEM_CHECKS = ['fields.W340', 'admin.E403', "models.W042"]

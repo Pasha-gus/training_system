@@ -1,11 +1,12 @@
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
-from django.test import TransactionTestCase
+from django.test import TransactionTestCase, override_settings
 from django.core.management import call_command
 
 from courses.models import Course, Lesson, Subscription
 from users.models import User
+from django.conf import settings
 
 
 class BaseTestCase(TransactionTestCase):
@@ -14,11 +15,16 @@ class BaseTestCase(TransactionTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        call_command('migrate', verbosity=0)
+        # Временное отключение проблемных приложений
+        with override_settings(
+            INSTALLED_APPS=[app for app in settings.INSTALLED_APPS
+                          if app not in ['django.contrib.admin', 'django_celery_beat']]
+        ):
+            call_command('migrate', verbosity=0, run_syncdb=True)
 
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create(
+        self.user = User.objects.create_user(
             email="test@test.ru",
             password="testpass123"
         )

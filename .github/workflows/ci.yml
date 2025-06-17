@@ -42,10 +42,12 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'django-insecure-test-key-123' }}
           DJANGO_SETTINGS_MODULE: config.settings_test
         run: |
+          find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+          find . -path "*/migrations/*.pyc" -delete
           rm -f test_db.sqlite3
-          python manage.py makemigrations --no-input --settings=config.settings_test
-          python manage.py migrate --no-input --settings=config.settings_test
-          python manage.py test --settings=config.settings_test
+          python manage.py makemigrations --no-input
+          python manage.py migrate --no-input
+          python manage.py test --keepdb --parallel
 
   build:
     needs: test

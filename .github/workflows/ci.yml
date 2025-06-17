@@ -38,6 +38,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Clean migrations
+        run: |
+          find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+          find . -path "*/migrations/*.pyc" -delete
+
+      - name: Run migrations
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings_test
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate --noinput
+
       - name: Run tests
         env:
           DJANGO_SETTINGS_MODULE: config.settings_test

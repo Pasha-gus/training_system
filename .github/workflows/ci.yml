@@ -2,6 +2,14 @@ name: Django CI
 
 on: [push, pull_request]
 
+env:
+  SECRET_KEY: 'django-insecure-test-key-for-ci-1234567890'
+  POSTGRES_DB: 'test_db'
+  POSTGRES_USER: 'test_user'
+  POSTGRES_PASSWORD: 'test_password'
+  POSTGRES_HOST: 'localhost'
+  POSTGRES_PORT: '5432'
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -33,14 +41,12 @@ jobs:
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        volumes:
+          - postgres-data:/var/lib/postgresql/data
 
     steps:
-      - name: Check code
+      - name: Check out code
         uses: actions/checkout@v3
 
       - name: Install Python
@@ -54,14 +60,32 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-django pytest-cov psycopg2-binary
 
+      - name: Waiting for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h localhost -p 5432 && break
+            sleep 5
+          done
+
+      - name: Launch migrations
+        env:
+          SECRET_KEY: ${{ env.SECRET_KEY }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ env.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
+        run: |
+          python manage.py migrate
+
       - name: Run tests
         env:
           SECRET_KEY: ${{ env.SECRET_KEY }}
           POSTGRES_DB: ${{ env.POSTGRES_DB }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          HOST: localhost
-          PORT: 5432
+          POSTGRES_HOST: ${{ env.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
         run: |
           python manage.py test
           pytest --cov=.

@@ -92,7 +92,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/training_system:${{ github.sha }}
-          docker stop myapp || true
-          docker rm myapp || true
-          docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/training_system:${{ github.sha }}
+          docker stop training_system || true
+          docker rm training_system || true
+          docker run -d --name training_system -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/training_system:${{ github.sha }}
           EOF

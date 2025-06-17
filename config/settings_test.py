@@ -83,7 +83,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
-# Настройки REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -93,7 +92,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Оптимизации для тестов
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 CELERY_BROKER_URL = None
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'

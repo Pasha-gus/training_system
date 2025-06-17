@@ -26,7 +26,6 @@ class BaseTestCase(TransactionTestCase):
         self.user = User.objects.create_user(
             email="test@test.ru",
             password="testpass123",
-            username="testuser"
         )
         self.client.force_authenticate(user=self.user)
 

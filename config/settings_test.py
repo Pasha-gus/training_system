@@ -95,3 +95,5 @@ REST_FRAMEWORK = {
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 CELERY_BROKER_URL = None
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+
+SILENCED_SYSTEM_CHECKS = ['admin.E403']

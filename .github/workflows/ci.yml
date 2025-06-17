@@ -33,15 +33,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      postgres:
-        image: postgres:13
+      redis:
+        image: redis
         ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          - 6379:6379
 
     steps:
       - name: Check out code
@@ -56,45 +51,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-django pytest-cov psycopg2-binary
-
-      - name: Wait for PostgreSQL
-        run: |
-          for i in {1..10}; do
-            pg_isready -h localhost -p 5432 && break
-            sleep 5
-          done
-
-      - name: Run migrations
-        env:
-          SECRET_KEY: ${{ env.SECRET_KEY }}
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          HOST: ${{ env.HOST }}
-          PORT: ${{ env.PORT }}
-        run: |
-          python manage.py migrate --noinput
+          pip install pytest pytest-django pytest-cov
 
       - name: Run tests
         env:
           SECRET_KEY: ${{ env.SECRET_KEY }}
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          HOST: ${{ env.HOST }}
-          PORT: ${{ env.PORT }}
         run: |
           python manage.py test
-          pytest --cov=.
 
-      - name: Run tests
-        env:
-          DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@localhost:5432/${{ env.POSTGRES_DB }}
-          SECRET_KEY: ${{ env.SECRET_KEY }}
-        run: |
-          python manage.py test
-          pytest --cov=.
 
   build:
     needs: test

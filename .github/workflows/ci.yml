@@ -7,8 +7,8 @@ env:
   POSTGRES_DB: 'test_db'
   POSTGRES_USER: 'test_user'
   POSTGRES_PASSWORD: 'test_password'
-  POSTGRES_HOST: 'localhost'
-  POSTGRES_PORT: '5432'
+  HOST: 'localhost'
+  PORT: '5432'
 
 jobs:
   lint:
@@ -35,10 +35,6 @@ jobs:
     services:
       postgres:
         image: postgres:13
-        env:
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
@@ -71,9 +67,26 @@ jobs:
 
       - name: Run migrations
         env:
-          DATABASE_URL: postgres://${{ env.POSTGRES_USER }}:${{ env.POSTGRES_PASSWORD }}@localhost:5432/${{ env.POSTGRES_DB }}
+          SECRET_KEY: ${{ env.SECRET_KEY }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          HOST: ${{ env.HOST }}
+          PORT: ${{ env.PORT }}
         run: |
           python manage.py migrate --noinput
+
+      - name: Run tests
+        env:
+          SECRET_KEY: ${{ env.SECRET_KEY }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          HOST: ${{ env.HOST }}
+          PORT: ${{ env.PORT }}
+        run: |
+          python manage.py test
+          pytest --cov=.
 
       - name: Run tests
         env:

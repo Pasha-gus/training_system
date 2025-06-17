@@ -1,6 +1,6 @@
 from celery import shared_task
 from django.core.mail import send_mail
-from datetime import timedelta, date, timezone
+from datetime import timedelta, date
 
 from config.settings import EMAIL_HOST_USER
 from courses.models import Subscription
@@ -14,7 +14,7 @@ def send_mail_update_course_info(course_id):
     subscription_course_id = Subscription.objects.filter(course=course_id)
     for subscription in subscription_course_id:
         send_mail(
-            f"Обновление материалов курса",
+            "Обновление материалов курса",
             f"Курс '{subscription.course.name}' был обновлен",
             from_email=EMAIL_HOST_USER,
             recipient_list=[subscription.user.email],

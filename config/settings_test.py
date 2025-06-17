@@ -96,4 +96,4 @@ PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 CELERY_BROKER_URL = None
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
-SILENCED_SYSTEM_CHECKS = ['admin.E403']
+SILENCED_SYSTEM_CHECKS = ['fields.W340', 'admin.E403']

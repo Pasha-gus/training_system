@@ -16,10 +16,10 @@ class BaseTestCase(TransactionTestCase):
     def setUpClass(cls):
         super().setUpClass()
         # Временное отключение проблемных приложений
-        with override_settings(
-            INSTALLED_APPS=[app for app in settings.INSTALLED_APPS
-                          if app not in ['django.contrib.admin', 'django_celery_beat']]
-        ):
+        with override_settings(INSTALLED_APPS=[
+            app for app in settings.INSTALLED_APPS
+            if app not in ['django.contrib.admin', 'django_celery_beat']
+        ]):
             call_command('migrate', verbosity=0, run_syncdb=True)
 
     def setUp(self):

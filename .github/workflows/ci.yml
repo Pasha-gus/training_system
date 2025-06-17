@@ -2,6 +2,14 @@ name: Django CI
 
 on: [push, pull_request]
 
+env:
+  SECRET_KEY: 'django-insecure-test-key-for-ci-1234567890'
+  POSTGRES_DB: 'test_db'
+  POSTGRES_USER: 'test_user'
+  POSTGRES_PASSWORD: 'test_password'
+  HOST: 'localhost'
+  PORT: '5432'
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -70,7 +78,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/training_system:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/training_system:${{ github.sha }}
-            
+
 
   deploy:
     needs: build

@@ -25,10 +25,8 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -37,20 +35,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'django-insecure-test-key-123' }}
+          DJANGO_SETTINGS_MODULE: config.settings_test
         run: |
-          python manage.py makemigrations --no-input
-          python manage.py migrate --no-input
-          python manage.py test
-
-      - name: Clean up
-        run: |
-          rm f test_db.sqlite3
+          python manage.py makemigrations --no-input --settings=config.settings_test
+          python manage.py migrate --no-input --settings=config.settings_test
+          python manage.py test --settings=config.settings_test
 
   build:
     needs: test

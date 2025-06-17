@@ -14,7 +14,7 @@ class Course(models.Model):
     owner = models.ForeignKey(
         "users.User", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Автор курса"
     )
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = "Курс"

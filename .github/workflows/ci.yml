@@ -43,7 +43,14 @@ jobs:
       - name: Run tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'django-insecure-test-key-123' }}
-        run: python manage.py test
+        run: |
+          python manage.py makemigrations --no-input
+          python manage.py migrate --no-input
+          python manage.py test
+
+      - name: Clean up
+        run: |
+          rm f test_db.sqlite3
 
   build:
     needs: test

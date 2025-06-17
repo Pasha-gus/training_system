@@ -36,6 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install tblib
 
       - name: Run tests
         env:
@@ -44,10 +45,13 @@ jobs:
         run: |
           find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
           find . -path "*/migrations/*.pyc" -delete
-          rm -f test_db.sqlite3
+    
+          pip install tblib
+    
           python manage.py makemigrations --no-input
           python manage.py migrate --no-input
-          python manage.py test --keepdb --parallel
+    
+          python manage.py test --parallel=1
 
   build:
     needs: test

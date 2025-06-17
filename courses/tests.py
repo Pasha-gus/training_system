@@ -15,7 +15,6 @@ class BaseTestCase(TransactionTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Временное отключение проблемных приложений
         with override_settings(INSTALLED_APPS=[
             app for app in settings.INSTALLED_APPS
             if app not in ['django.contrib.admin', 'django_celery_beat']
@@ -26,7 +25,8 @@ class BaseTestCase(TransactionTestCase):
         self.client = APIClient()
         self.user = User.objects.create_user(
             email="test@test.ru",
-            password="testpass123"
+            password="testpass123",
+            username="testuser"
         )
         self.client.force_authenticate(user=self.user)
 
